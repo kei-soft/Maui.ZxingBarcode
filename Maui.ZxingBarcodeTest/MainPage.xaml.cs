@@ -9,17 +9,32 @@
             InitializeComponent();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private void BarcodeReader_BarcodesDetected(object sender, ZXing.Net.Maui.BarcodeDetectionEventArgs e)
         {
-            count++;
+            Dispatcher.Dispatch(() =>
+            {
+                this.barcodeResult.Text = $"{e.Results[0].Value}{Environment.NewLine}[{e.Results[0].Format}]";
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
+                //this.generateBarcode.Format = e.Results[0].Format; // Error 발생
+                this.generateBarcode.Value = e.Results[0].Value;
+            });
+        }
+
+        private void touchOnSwitch_Toggled(object sender, ToggledEventArgs e)
+        {
+            this.barcodeReader.IsTorchOn = this.touchOnSwitch.IsToggled;
+        }
+
+        private void cameraSwitch_Toggled(object sender, ToggledEventArgs e)
+        {
+            if (this.cameraSwitch.IsToggled)
+            {
+                this.barcodeReader.CameraLocation = ZXing.Net.Maui.CameraLocation.Front;
+            }
             else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            {
+                this.barcodeReader.CameraLocation = ZXing.Net.Maui.CameraLocation.Rear;
+            }
         }
     }
-
 }

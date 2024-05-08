@@ -11,7 +11,7 @@ namespace Maui.ZxingBarcodeTest
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseBarcodeReader()
+                .UseBarcodeReader() // 추가
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
